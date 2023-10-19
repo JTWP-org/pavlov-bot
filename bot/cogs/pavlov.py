@@ -273,9 +273,9 @@ class Pavlov(commands.Cog):
                     continue
                 dead = ""
                 if alive_list.get(player.get("UniqueId")):
-                    dead = ":skull:"
+                    dead = ":dizzy_face: "
                 elif not alive_list.get(player.get("UniqueId")):
-                    dead = ":slight_smile:"
+                    dead = <:lvl0:701198298090045481>
                 if player.get('UniqueId') == player.get('Username'):
                     steamprofile = ""
                 else:

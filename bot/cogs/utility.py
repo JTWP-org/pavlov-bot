@@ -8,7 +8,7 @@ from discord.ext import commands
 
 PY_VERSION = f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
 
-
+jtwp_version = "0.1"
 class Utility(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -64,6 +64,14 @@ class Utility(commands.Cog):
             name="Software Versions",
             value=f"```py\n"
             f"Pavlov-Bot: {self.bot.version}\n"
+            f"discord.py: {discord.__version__}\n"
+            f"Python: {PY_VERSION}```",
+            inline=False,
+        )
+        embed.add_field(
+            name="JTWP edit Version ",
+            value=f"`{jtwp_version}`"
+            f"Pavlov-Bot: JTWP.org is a community for Pavlov-VR\n"
             f"discord.py: {discord.__version__}\n"
             f"Python: {PY_VERSION}```",
             inline=False,

@@ -1,7 +1,7 @@
 import json
 import os
 
-default_config = {"prefix": ";", "token": "", "default_server": "default"}
+default_config = {"prefix": ";", "token": "", "default_server": "default" ,  "webhook_url": "", "webhook_logging_enabled": False }
 
 
 class Config:
@@ -18,8 +18,17 @@ class Config:
         self.default_server = self.config.get(
             "default_server", default_config.get("default_server")
         )
+        
+
+        self.webhook_url = self.config.get("webhook_url", default_config.get("webhook_url"))
+        self.webhook_logging_enabled = self.config.get("webhook_logging_enabled", default_config.get("webhook_logging_enabled"))
 
     def store(self):
-        c = {"prefix": self.prefix, "token": self.token}
+        c = {
+            "prefix": self.prefix,
+            "token": self.token,
+            "webhook_url": self.webhook_url,
+            "webhook_logging_enabled": self.webhook_logging_enabled
+        }
         with open(self.filename, "w") as file:
             json.dump(c, file)

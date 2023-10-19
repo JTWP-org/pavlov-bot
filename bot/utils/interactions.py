@@ -146,7 +146,8 @@ async def spawn_gamemode_select(ctx: commands.Context, interaction: discord_comp
             SelectOption(label="WW2 Gun Game", value="WW2GUN"),
             SelectOption(label="Zombies", value="ZWV"),
             SelectOption(label="Hide", value="HIDE"),
-            SelectOption(label="Prophunt", value="PH"),
+            SelectOption(label="Prophunt", value="PH"),            
+            SelectOption(label="Infection", value="INFECTION "),
         ],
     )
 

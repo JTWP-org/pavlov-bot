@@ -81,6 +81,20 @@ async def before_invoke(ctx):
     ctx.interaction_exec = False
     await ctx.trigger_typing()
     user_action_log(ctx, f"INVOKED {ctx.command.name.upper():<10} args: {ctx.args[2:]}")
+    
+    # Example embed data
+    embed_data = {
+        "title": "Command Invocation",
+        "description": f"User {ctx.author} invoked {ctx.command.name} with args: {ctx.args[2:]}",
+        "color": 0x3498db,  # Color in hexadecimal (e.g., blue)
+        "fields": [
+            {"name": "Channel", "value": ctx.channel.name, "inline": True},
+            {"name": "Guild", "value": ctx.guild.name, "inline": True}
+        ]
+    }
+    
+    # Send an embed with the command invocation details
+    send_log_to_webhook("Command Invocation", embed=embed_data)
 
 
 def extensions():
