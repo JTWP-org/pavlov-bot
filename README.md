@@ -1,3 +1,5 @@
+<h1>JTWP EDIT mod.io suupport and larger img of maap more to add still  </h1>
+
 # pavlov-bot
 Discord bot to inferface with Pavlov VR RCON
 
