@@ -119,6 +119,8 @@ class Pavlov(commands.Cog):
         teams_cog = self.bot.get_cog("Teams")
         await teams_cog.teams(ctx)
 
+
+added larger img
     @commands.command()
     async def serverinfo(self, ctx, server_name: str = config.default_server):
         """`{prefix}serverinfo <server_name>` - *Provides details on server*
