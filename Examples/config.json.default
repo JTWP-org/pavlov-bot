@@ -1,1 +1,7 @@
-{"prefix": ";", "token": "replacemewithdiscordtoken", "default_server": "default"}
+{
+  "default_server": "default",
+  "prefix": ";",
+  "token": "",
+  "apiPATH": "",
+  "apiKEY": ""
+}
