@@ -2,6 +2,8 @@ import logging
 import re
 import sys
 import traceback
+import subprocess
+import json
 from asyncio.exceptions import TimeoutError
 from datetime import datetime
 
@@ -58,17 +60,12 @@ class Pavlov(commands.Cog):
             return _map.get("name"), _map.get("image")
         try:
             map_id = map_label.split("UGC")[1]
-            data = await fetch(
-                self.bot.aiohttp,
-                f"https://steamcommunity.com/sharedfiles/filedetails/?id={map_id}",
-            )
-            soup = BeautifulSoup(data, "html.parser")
-            # url_regex = r"/(\b(https?|ftp|file):\/\/[-A-Z0-9+&Q#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig"
-            regex = r"(https:\/\/steamuserimages-a\.akamaihd\.net\/ugc\/[A-Z0-9\/]*)"
-            match = re.findall(regex, data)[0]
-            map_image = match
-            map_name = soup.title.string.split("::")[1]
-            self._map_aliases[map_label] = {"name": map_name, "image": map_image}
+            curl_command = f'curl -s -X GET "{config.apiPATH}/games/3959/mods/{map_id}?api_key={config.apiKEY}" -H "Accept: application/json"'
+            process = subprocess.Popen(curl_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            output, _ = process.communicate()
+            data = json.loads(output)
+            map_name = data.get("name")
+            map_image = data.get("logo", {}).get("original")
             return map_name, map_image
         except Exception as ex:
             logging.error(f"Getting map label {map_label} failed with {ex}")
@@ -149,7 +146,7 @@ class Pavlov(commands.Cog):
             )
         embed = discord.Embed(title=f"**ServerInfo** for `{server_name}`")
         if map_image:
-            embed.set_thumbnail(url=map_image)
+            embed.set_image(url=map_image)
         embed.add_field(name="Server Name", value=server_info.get("ServerName"), inline=False)
         embed.add_field(name="Round State", value=server_info.get("RoundState"))
         embed.add_field(name="Players", value=server_info.get("PlayerCount"))
@@ -230,7 +227,9 @@ class Pavlov(commands.Cog):
         if len(map_list) == 0:
             embed.description = f"Currently no active maps on `{server_name}`"
         for _map in map_list:
-            embed.description += f"\n - {_map.get('MapId', '')} <{_map.get('GameMode')}>"
+            map_label = _map.get('MapId')
+            map_name, map_image = await self.get_map_alias(map_label)
+            embed.description += f"\n {map_name} <{_map.get('GameMode')}>  {_map.get('MapId', '')}"
         if ctx.batch_exec:
             return embed.description
         await ctx.send(embed=embed)
@@ -273,9 +272,9 @@ class Pavlov(commands.Cog):
                     continue
                 dead = ""
                 if alive_list.get(player.get("UniqueId")):
-                    dead = ":dizzy_face: "
+                    dead = ":skull:"
                 elif not alive_list.get(player.get("UniqueId")):
-                    dead = <:lvl0:701198298090045481>
+                    dead = ":slight_smile:"
                 if player.get('UniqueId') == player.get('Username'):
                     steamprofile = ""
                 else:
